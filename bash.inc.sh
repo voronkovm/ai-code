@@ -203,7 +203,7 @@ gemini_auto() {
         echo "Usage: gemini_auto <github-issue-url>"
         return 1
     fi
-    gemini --yolo "$AI_ISSUE_PROMPT $github_url"
+    gemini -i "$AI_ISSUE_PROMPT $github_url" --yolo
 }
 
 codex_auto() {
@@ -212,7 +212,7 @@ codex_auto() {
         echo "Usage: codex_auto <github-issue-url>"
         return 1
     fi
-    codex --full-auto "$AI_ISSUE_PROMPT $github_url"
+    codex -i "$AI_ISSUE_PROMPT $github_url" --full-auto
 }
 
 # AI Assistant Aliases (for backward compatibility)
