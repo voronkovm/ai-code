@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Shared prompts
-AI_ISSUE_PROMPT="You are working on a GitHub issue. Please read the issue details (e.g. using `gh` terminal command) and implement the necessary changes to resolve it. Issue URL:"
+AI_ISSUE_PROMPT="You are working on a GitHub issue. Please read the issue details (e.g. using `gh` terminal command) and implement the necessary changes to resolve it. Do not make other git/github operations such as commit/PR/push/etc. Issue URL:"
 
 # Git Worktree (gwt) Functions
 
