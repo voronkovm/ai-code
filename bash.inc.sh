@@ -12,6 +12,7 @@ gwt_new() {
     
     # Create worktree
     git worktree add "$worktree_path" -b "$branch_name"
+    cp -R venv "../$branch_name"
     
     # Create temporary script
     local temp_script=$(mktemp)
@@ -197,6 +198,31 @@ claude_auto() {
     claude --dangerously-skip-permissions "$AI_ISSUE_PROMPT $github_url"
 }
 
+kimi() {
+    local script_dir=$(dirname -- "${BASH_SOURCE[0]}")
+    ( # Run in a subshell to contain environment variables
+        set -a # Automatically export all variables defined from now on
+        source "$script_dir/kimi.env"
+        set +a # Stop automatically exporting
+        claude
+    )
+}
+
+kimi_auto() {
+    local github_url="$1"
+    if [ -z "$github_url" ]; then
+        echo "Usage: kimi_auto <github-issue-url>"
+        return 1
+    fi
+    ( # Run in a subshell to contain environment variables
+        set -a # Automatically export all variables defined from now on
+        local script_dir=$(dirname -- "${BASH_SOURCE[0]}")
+        source "$script_dir/kimi.env"
+        set +a # Stop automatically exporting
+        claude --dangerously-skip-permissions "$AI_ISSUE_PROMPT $github_url"
+    )
+}
+
 gemini_auto() {
     local github_url="$1"
     if [ -z "$github_url" ]; then
@@ -217,5 +243,6 @@ codex_auto() {
 
 # AI Assistant Aliases (for backward compatibility)
 alias claude-auto='claude_auto'
+alias kimi-auto='kimi_auto'
 alias gemini-auto='gemini_auto'
 alias codex-auto='codex_auto'
