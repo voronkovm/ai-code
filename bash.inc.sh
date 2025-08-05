@@ -199,7 +199,12 @@ claude_auto() {
 }
 
 kimi() {
-    local script_dir=$(dirname -- "${BASH_SOURCE[0]}")
+    local script_dir
+    if [ -n "$ZSH_VERSION" ]; then
+      script_dir="$(dirname -- "${(%):-%x}")"
+    else # BASH
+      script_dir="$(dirname -- "${BASH_SOURCE[0]}")"
+    fi
     ( # Run in a subshell to contain environment variables
         set -a # Automatically export all variables defined from now on
         source "$script_dir/kimi.env"
@@ -214,9 +219,14 @@ kimi_auto() {
         echo "Usage: kimi_auto <github-issue-url>"
         return 1
     fi
+    local script_dir
+    if [ -n "$ZSH_VERSION" ]; then
+      script_dir="$(dirname -- "${(%):-%x}")"
+    else # BASH
+      script_dir="$(dirname -- "${BASH_SOURCE[0]}")"
+    fi
     ( # Run in a subshell to contain environment variables
         set -a # Automatically export all variables defined from now on
-        local script_dir=$(dirname -- "${BASH_SOURCE[0]}")
         source "$script_dir/kimi.env"
         set +a # Stop automatically exporting
         claude --dangerously-skip-permissions "$AI_ISSUE_PROMPT $github_url"
